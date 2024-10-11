@@ -1,4 +1,3 @@
-// import { StatusBar } from "expo-status-bar";
 import { Text, View, ScrollView, Image } from "react-native";
 
 import { Redirect, router } from "expo-router";
@@ -21,6 +20,7 @@ export default function Index() {
       <ScrollView contentContainerStyle={{ height: `100%` }}>
         <View
           style={{
+            flex: 1,
             minHeight: `95%`,
             width: `100%`,
             justifyContent: "center",
