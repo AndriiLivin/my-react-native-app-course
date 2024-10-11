@@ -12,30 +12,39 @@ import "react-native-reanimated";
 import { useColorScheme } from "@/hooks/useColorScheme";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
-// SplashScreen.preventAutoHideAsync();
+SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  // const colorScheme = useColorScheme();
-  // const [loaded] = useFonts({
-  //   SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
-  // });
+  const colorScheme = useColorScheme();
 
-  // useEffect(() => {
-  //   if (loaded) {
-  //     SplashScreen.hideAsync();
-  //   }
-  // }, [loaded]);
+  const [fontsLoaded, error] = useFonts({
+    PoppinsBlack: require("../assets/fonts/Poppins-Black.ttf"),
+    PoppinsBold: require("../assets/fonts/Poppins-Bold.ttf"),
+    PoppinsExtraBold: require("../assets/fonts/Poppins-ExtraBold.ttf"),
+    PoppinsExtraLight: require("../assets/fonts/Poppins-ExtraLight.ttf"),
+    PoppinsLight: require("../assets/fonts/Poppins-Light.ttf"),
+    PoppinsMedium: require("../assets/fonts/Poppins-Medium.ttf"),
+    PoppinsRegular: require("../assets/fonts/Poppins-Regular.ttf"),
+    PoppinsSemiBold: require("../assets/fonts/Poppins-SemiBold.ttf"),
+    PoppinsThin: require("../assets/fonts/Poppins-Thin.ttf"),
+  });
 
-  // if (!loaded) {
-  //   return null;
-  // }
+  useEffect(() => {
+    if (fontsLoaded) {
+      SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded, error]);
+
+  if (!fontsLoaded && !error) {
+    return null;
+  }
 
   return (
-    // <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
     <Stack>
       <Stack.Screen name="index" options={{ headerShown: false }} />
       {/* <Stack.Screen name="+not-found" /> */}
     </Stack>
-    // </ThemeProvider>
+     </ThemeProvider>
   );
 }
