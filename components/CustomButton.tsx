@@ -1,5 +1,5 @@
-import { StyleSheet, Text, TouchableOpacity } from "react-native";
-import React from "react";
+import { Pressable, StyleSheet, Text, TouchableOpacity } from "react-native";
+import React, { useState } from "react";
 
 interface ICustomButton {
   title: string;
@@ -13,11 +13,11 @@ interface ICustomButton {
   isLoading: boolean;
 }
 
-interface IUnknown {
-  // дополнительные пока неизвестные ключи
-  // используется не часто
-  [key: string]: string | number | boolean;
-}
+// interface IUnknown {
+//   // дополнительные пока неизвестные ключи
+//   // используется не часто
+//   [key: string]: string | number | boolean;
+// }
 
 const CustomButton = ({
   title,
@@ -26,20 +26,33 @@ const CustomButton = ({
   textStyles,
   isLoading,
 }: ICustomButton) => {
-  //  разработчик должен явно писать any, если по каким-то причинам не получается правильно описать тип переменной или если указание типа переменной приводит к ошибкам в другом участке кода
-  const styleSum: any = Object.assign(containerStyles, styles.opacity, {
-    opacity: isLoading ? 50 : 100,
-  });
+
+  const [isPressed, setIsPressed] = useState(false);
 
   return (
-    <TouchableOpacity
-      onPress={handlPress}
-      activeOpacity={0.7}
-      style={styleSum}
-      disabled={isLoading}
-    >
-      <Text style={Object.assign(styles.text, textStyles)}>{title}</Text>
-    </TouchableOpacity>
+    <>
+      <Pressable
+        onPress={handlPress}
+        onPressIn={() => setIsPressed(true)}
+        onPressOut={() => setIsPressed(false)}
+        // activeOpacity={0.7}
+        style={Object.assign(containerStyles, styles.opacity, {
+          opacity: isLoading ? 50 : 100,
+          backgroundColor: isPressed ? "rgba(255, 140, 0, 0.7)":"#FF8C00",
+        })}
+        disabled={isLoading}
+      >
+        <Text style={Object.assign(styles.text, textStyles)}>{title}</Text>
+      </Pressable>
+      {/* <TouchableOpacity
+        onPress={handlPress}
+        activeOpacity={0.7}
+        style={styleSum}
+        disabled={isLoading}
+      >
+        <Text style={Object.assign(styles.text, textStyles)}>{title}</Text>
+      </TouchableOpacity> */}
+    </>
   );
 };
 

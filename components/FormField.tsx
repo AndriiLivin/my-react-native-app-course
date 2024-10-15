@@ -3,7 +3,9 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  TouchableOpacity,
+  // TouchableOpacity,
+  // вместо него
+  Pressable,
   View,
 } from "react-native";
 import React, { useState } from "react";
@@ -27,7 +29,7 @@ const FormField = ({
   const [isActive, setIsActive] = useState(false);
 
   return (
-    <View style={Object.assign({ rowGap: 1 }, otherStyles)}>
+    <View style={Object.assign({ rowGap: 1 }, otherStyles, {pointerEvents: 'none'})}>
       <Text
         style={{
           fontFamily: "PoppinsMedium",
@@ -57,7 +59,7 @@ const FormField = ({
           // paddingRight: 10,
           // marginTop: 20,
         }}
-        focusable
+        // focusable
       >
         <TextInput
           style={{
@@ -79,9 +81,10 @@ const FormField = ({
           onChangeText={handleChangeText}
           secureTextEntry={title === "Password" && !showPassword}
         />
-        {/* по сути <TouchableOpacity> является кнопкой */}
+        {/* по сути <TouchableOpacity> - <Pressable является кнопкой */}
         {title === "Password" && (
-          <TouchableOpacity
+          // <TouchableOpacity
+          <Pressable
             // переключатель глаза
             onPress={() => setShowPassword(!showPassword)}
           >
@@ -97,7 +100,7 @@ const FormField = ({
                 right: 12,
               }}
             />
-          </TouchableOpacity>
+          </Pressable>
         )}
       </View>
     </View>

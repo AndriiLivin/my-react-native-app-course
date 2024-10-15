@@ -19,7 +19,7 @@ interface ITabIcon {
 
 const TabIcon = ({ icon, color, name, focused }: ITabIcon) => {
   return (
-    <View style={{ alignItems: "center", gap: 1 }}>
+    <View style={{ alignItems: "center", gap: 1, pointerEvents: "none" }}>
       <Image
         source={icon}
         resizeMode="contain"
