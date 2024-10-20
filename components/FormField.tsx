@@ -29,7 +29,7 @@ const FormField = ({
   const [isActive, setIsActive] = useState(false);
 
   return (
-    <View style={Object.assign({ rowGap: 1 }, otherStyles, {pointerEvents: 'none'})}>
+    <View style={Object.assign({ rowGap: 1 }, otherStyles)}>
       <Text
         style={{
           fontFamily: "PoppinsMedium",
@@ -71,8 +71,9 @@ const FormField = ({
             color: "#FFA300",
             fontSize: 18,
             lineHeight: 22.9,
+            paddingLeft:10,
             // fontWeight: 400,
-            textAlign: "center",
+            // textAlign: "center",
             // marginTop: 20,
           }}
           value={value}
@@ -102,6 +103,7 @@ const FormField = ({
             />
           </Pressable>
         )}
+
       </View>
     </View>
   );

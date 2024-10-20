@@ -1,11 +1,12 @@
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Alert, Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { images } from "../../constants";
 import FormField from "@/components/FormField";
 import CustomButton from "@/components/CustomButton";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
+import { createUser } from "@/lib/appwrite";
 
 const SingUp = () => {
   const [form, setForm] = useState({
@@ -16,7 +17,30 @@ const SingUp = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const Submit = () => {};
+  const submit = async () => {
+    if (!form.username || !form.password || !form.email) {
+      Alert.alert("Error", "Please fill in all fields");
+      alert("Please fill in all fields");
+    }
+    setIsSubmitting(true);
+
+    try {
+      // создание пользователя
+      const result = await createUser(form.email, form.password, form.username);
+      // set it to global state....
+
+      console.log("перенаправление");
+      router.replace("/home");
+      //
+    } catch (error: any) {
+      Alert.alert("Error", "предупреждаю" + error.message);
+      console.log("предупреждаю" + error.message);
+      
+      alert("предупреждаю");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <SafeAreaView style={{ backgroundColor: "#161622", height: `100%` }}>
@@ -25,7 +49,6 @@ const SingUp = () => {
         contentContainerStyle={{
           height: `100%`,
           width: `100%`,
-
         }}
       >
         <View
@@ -41,7 +64,6 @@ const SingUp = () => {
             paddingRight: 10,
             paddingTop: 16,
             paddingBottom: 16,
-
           }}
         >
           <Image
@@ -82,8 +104,8 @@ const SingUp = () => {
             otherStyles={{ width: `100%`, marginTop: 20 }}
           />
           <CustomButton
-            title="Sing In"
-            handlPress={Submit}
+            title="Sing Up"
+            handlPress={submit}
             containerStyles={{ width: `100%`, marginTop: 30 }}
             textStyles={{}}
             isLoading={isSubmitting}
@@ -95,7 +117,6 @@ const SingUp = () => {
               gap: 8,
               justifyContent: "center",
               paddingTop: 20,
-              
             }}
           >
             <Text

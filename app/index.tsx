@@ -8,9 +8,15 @@ import { images } from "../constants";
 import CustomButton from "@/components/CustomButton";
 import { StatusBar } from "expo-status-bar";
 
+import { useGlobalContext } from "@/context/GlobalProvider";
+
 // это домашняя страница или прямая косая черта /
 // А подчеркивание будет присутствовать на всех маршрутах _layaut.tsx
 export default function Index() {
+  const [ isLoading, isLoggedIn ] = useGlobalContext();
+
+if (!isLoading && isLoggedIn) return <Redirect href={"/home"} /> 
+
   return (
     // NativeWind extends the React Native types via declaration merging. The simplest method to include the types is to create a new nativewind-env.d.ts file and add a triple-slash directive referencing the types.
     // /// <reference types="nativewind/types" />
