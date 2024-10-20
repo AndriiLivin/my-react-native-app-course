@@ -81,7 +81,7 @@ export const createUser = async (
 export const singIn = async (email: string, password: string) => {
   try {
     const currenSession = await account.getSession("current");
-    // console.log(currenSession.current);
+    console.log(currenSession);
     if (currenSession.current) {
       return currenSession;
     }

@@ -1,24 +1,7 @@
 import { getCurrentUser } from "@/lib/appwrite";
 import { createContext, useContext, useEffect, useState } from "react";
 
-import { type Dispatch, type SetStateAction } from "react";
-// разделено, чтобы реакт быстрее обновлялся. Такие требования
-
-export type TGlobalContext = [
-  boolean | null,
-  Dispatch<SetStateAction<boolean>> | null,
-  any | null,
-  Dispatch<SetStateAction<any>> | null,
-  boolean | null
-];
-
-const GlobalContext = createContext<TGlobalContext>([
-  null,
-  null,
-  null,
-  null,
-  null,
-]);
+const GlobalContext = createContext({});
 // экспортируем хук кот указывает какой контекст мы хотим получить
 export const useGlobalContext = () => {
   // в данном случае это глобальный контекст
@@ -36,12 +19,12 @@ const GlobalProvider = ({ children }: any) => {
       .then((res) => {
         if (res) {
           console.log(res);
-
+          
           setIsLoggedIn(true);
           setUser(res);
         } else {
           // console.log("res не получен");
-
+          
           setIsLoggedIn(false);
           setUser(null);
         }
@@ -56,7 +39,7 @@ const GlobalProvider = ({ children }: any) => {
 
   return (
     <GlobalContext.Provider
-      value={[isLoggedIn, setIsLoggedIn, user, setUser, isLoading]}
+      value={{ isLoggedIn, setIsLoggedIn, user, setUser, isLoading }}
     >
       {children}
     </GlobalContext.Provider>
