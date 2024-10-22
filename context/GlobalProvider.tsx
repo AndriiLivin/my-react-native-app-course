@@ -18,7 +18,7 @@ const GlobalProvider = ({ children }: any) => {
     getCurrentUser()
       .then((res) => {
         if (res) {
-          console.log(res);
+          // console.log(res);
           
           setIsLoggedIn(true);
           setUser(res);

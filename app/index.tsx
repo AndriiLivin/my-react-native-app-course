@@ -15,7 +15,9 @@ import { useGlobalContext } from "@/context/GlobalProvider";
 export default function Index() {
   const { isLoading, isLoggedIn }:any = useGlobalContext();
 
-if (!isLoading && isLoggedIn) return <Redirect href={"/home"} /> 
+  console.log(isLoading, isLoggedIn);
+  
+if (!isLoading && isLoggedIn) return <Redirect href="/home" /> 
 
   return (
     // NativeWind extends the React Native types via declaration merging. The simplest method to include the types is to create a new nativewind-env.d.ts file and add a triple-slash directive referencing the types.

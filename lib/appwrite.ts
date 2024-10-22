@@ -1,3 +1,4 @@
+import { useGlobalContext } from "@/context/GlobalProvider";
 import {
   Client,
   Account,
@@ -48,17 +49,15 @@ export const createUser = async (
     // создаем фотографию профиля ?????
     // getInitials получает инициалы имени пользователя
     const avatarUrl = avatars.getInitials(username);
-    // console.log("создан акаунт");
 
     await singIn(email, password);
     // как только войдем в систему можем создать этого пользователя
     // создаем экземпляр учетной записи newUser
-    console.log(await singIn(email, password));
 
     const newUser = await databases.createDocument(
       appwriteConfig.databaseId,
       appwriteConfig.userCollectionId,
-      // т.к. его еще нет
+      // т.к. идентификатора документа еще нет
       ID.unique(),
       // создаем новый экземпляр пользователя
       {
@@ -69,7 +68,6 @@ export const createUser = async (
       }
     );
     // возвращаем нового пользователя
-    console.log(newUser);
 
     return newUser;
   } catch (error: any) {
@@ -79,17 +77,19 @@ export const createUser = async (
 };
 
 export const singIn = async (email: string, password: string) => {
+  
   try {
-    const currenSession = await account.getSession("current");
-    console.log(currenSession);
-    if (currenSession.current) {
-      return currenSession;
-    }
-  } catch (error: any) {
-    throw new Error(error);
-  }
+    // const list = await account.listSessions();
+    // console.log(list, list.total, list.sessions);
 
-  try {
+    // if (isLoggedIn) {
+    //   console.log("есть текущая сессия");
+
+    //   const currentSession = await account.getSession("current");
+    //   console.log(currentSession);
+
+    //   return currentSession;
+    // }
     // создаем сеанс электронной почты
     // метод createEmailPasswordSession позволяет пользователю войти в свою учетную запись по email и password
     // предоставляется appwrite
@@ -106,7 +106,7 @@ export const getCurrentUser = async () => {
     const currentAccaunt = await account.get();
 
     if (!currentAccaunt) throw Error;
-    // если текущая уч запись есть, то удаляем из баз данных
+    // если текущая уч запись есть, то получаем из баз данных
     const currentUser = await databases.listDocuments(
       appwriteConfig.databaseId,
       appwriteConfig.userCollectionId,

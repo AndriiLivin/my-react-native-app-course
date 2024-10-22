@@ -7,6 +7,7 @@ import FormField from "@/components/FormField";
 import CustomButton from "@/components/CustomButton";
 import { Link, router } from "expo-router";
 import { createUser } from "@/lib/appwrite";
+import { useGlobalContext } from "@/context/GlobalProvider";
 
 const SingUp = () => {
   const [form, setForm] = useState({
@@ -16,9 +17,10 @@ const SingUp = () => {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { setUser, setIsLoggedIn }: any = useGlobalContext();
 
   const submit = async () => {
-    if (!form.username || !form.password || !form.email) {
+    if (form.username === "" || form.password === "" || form.email === "") {
       Alert.alert("Error", "Please fill in all fields");
       alert("Please fill in all fields");
     }
@@ -28,6 +30,8 @@ const SingUp = () => {
       // создание пользователя
       const result = await createUser(form.email, form.password, form.username);
       // set it to global state....
+      setUser(result);
+      setIsLoggedIn(true);
 
       console.log("перенаправление");
       router.replace("/home");
@@ -35,7 +39,7 @@ const SingUp = () => {
     } catch (error: any) {
       Alert.alert("Error", "предупреждаю" + error.message);
       console.log("предупреждаю" + error.message);
-      
+
       alert("предупреждаю");
     } finally {
       setIsSubmitting(false);

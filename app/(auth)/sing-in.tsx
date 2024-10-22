@@ -6,7 +6,8 @@ import { images } from "../../constants";
 import FormField from "@/components/FormField";
 import CustomButton from "@/components/CustomButton";
 import { Link, router } from "expo-router";
-import { singIn } from "@/lib/appwrite";
+import { getCurrentUser, singIn } from "@/lib/appwrite";
+import { useGlobalContext } from "@/context/GlobalProvider";
 
 const SingIn = () => {
   const [form, setForm] = useState({
@@ -15,31 +16,36 @@ const SingIn = () => {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { setUser, setIsLoggedIn }: any = useGlobalContext();
 
- const submit = async () => {
-   if (!form.password || !form.email) {
-     Alert.alert("Error", "Please fill in all fields");
-     alert("Please fill in all fields");
-   }
-   setIsSubmitting(true);
+  const submit = async () => {
+    if (form.password === "" || form.email === "") {
+      Alert.alert("Error", "Please fill in all fields");
+      alert("Please fill in all fields");
+    }
+    setIsSubmitting(true);
 
-   try {
-     // входим в систему
-     await singIn(form.email, form.password);
-     // set it to global state....
+    try {
+      // входим в систему
+      await singIn(form.email, form.password);
+      const result = await getCurrentUser();
+      // set it to global state....
+      setUser(result);
+      setIsLoggedIn(true);
 
-    //  console.log("перенаправление");
-     router.replace("/home");
-     //
-   } catch (error: any) {
-     Alert.alert("Error", "предупреждаю" + error.message);
-    //  console.log("предупреждаю" + error.message);
+      Alert.alert("Success", "User sined in successfully");
+      alert("User sined in successfully");
+      router.replace("/home");
+      //
+    } catch (error: any) {
+      Alert.alert("Error", "предупреждаю" + error.message);
+      //  console.log("предупреждаю" + error.message);
 
-     alert("предупреждаю");
-   } finally {
-     setIsSubmitting(false);
-   }
- };
+      alert("предупреждаю");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <SafeAreaView style={{ backgroundColor: "#161622", height: `100%` }}>
@@ -48,9 +54,7 @@ const SingIn = () => {
         contentContainerStyle={{
           height: `100%`,
           width: `100%`,
-
         }}
-
       >
         <View
           style={{
@@ -65,7 +69,6 @@ const SingIn = () => {
             paddingRight: 10,
             paddingTop: 16,
             paddingBottom: 16,
-
           }}
         >
           <Image
@@ -113,7 +116,6 @@ const SingIn = () => {
               gap: 8,
               justifyContent: "center",
               paddingTop: 20,
-
             }}
           >
             <Text
