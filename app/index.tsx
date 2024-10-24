@@ -15,7 +15,7 @@ import { useGlobalContext } from "@/context/GlobalProvider";
 export default function Index() {
   const { isLoading, isLoggedIn }:any = useGlobalContext();
 
-  console.log(isLoading, isLoggedIn);
+  // console.log(isLoading, isLoggedIn);
   
 if (!isLoading && isLoggedIn) return <Redirect href="/home" /> 
 

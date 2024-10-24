@@ -129,7 +129,7 @@ const SingIn = () => {
                 // marginTop: 20,
               }}
             >
-              Don't hsve account?
+              Don't have account?
             </Text>
             <Link
               href={"/sing-up"}

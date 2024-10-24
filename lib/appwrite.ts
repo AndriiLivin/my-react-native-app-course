@@ -17,6 +17,18 @@ export const appwriteConfig = {
   videoCollectionId: "670ff344002056408dc6",
   storageId: "670ff83e00173f0817e1",
 };
+
+// извлечем  данные из config
+const {
+  endpoint,
+  platform,
+  projectId,
+  databaseId,
+  userCollectionId,
+  videoCollectionId,
+  storageId,
+} = appwriteConfig;
+
 // Android SDK (Software Development Kit) представляет собой набор инструментов, которые служат для разработки, отладки, тестирования и написания программного кода с целью создания программного обеспечения для операционной системы Android. Этот пакет предназначен как для профессиональных разработчиков, так и для энтузиастов.
 
 // Init your React Native SDK
@@ -30,6 +42,7 @@ client
 const account = new Account(client);
 const avatars = new Avatars(client);
 const databases = new Databases(client);
+
 
 export const createUser = async (
   email: string,
@@ -77,7 +90,6 @@ export const createUser = async (
 };
 
 export const singIn = async (email: string, password: string) => {
-  
   try {
     // const list = await account.listSessions();
     // console.log(list, list.total, list.sessions);
@@ -90,6 +102,9 @@ export const singIn = async (email: string, password: string) => {
 
     //   return currentSession;
     // }
+
+    // предварительно удаляем текущую
+    await account.deleteSession("current");
     // создаем сеанс электронной почты
     // метод createEmailPasswordSession позволяет пользователю войти в свою учетную запись по email и password
     // предоставляется appwrite
@@ -120,5 +135,20 @@ export const getCurrentUser = async () => {
   } catch (error) {
     // записываем ошибку в журнал
     console.log(error);
+  }
+};
+
+// Извлекаем все записи
+export const getAllPosts = async () => {
+  try {
+    const posts = await databases.listDocuments(
+      // теперь можно опустить appwriteConfig
+      databaseId,
+      videoCollectionId
+    );
+    return posts.documents;
+
+  } catch (error) {
+    throw new Error("AllPosts");
   }
 };
