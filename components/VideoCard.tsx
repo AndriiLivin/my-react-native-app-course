@@ -116,7 +116,7 @@ const VideoCard = ({
               position: "relative",
               justifyContent: "center",
               alignItems: "center",
-              // opacity: play ? 1.0 : 1.5,
+
             }}
           >
             <Image

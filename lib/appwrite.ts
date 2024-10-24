@@ -43,7 +43,6 @@ const account = new Account(client);
 const avatars = new Avatars(client);
 const databases = new Databases(client);
 
-
 export const createUser = async (
   email: string,
   password: string,
@@ -147,7 +146,21 @@ export const getAllPosts = async () => {
       videoCollectionId
     );
     return posts.documents;
+  } catch (error) {
+    throw new Error("AllPosts");
+  }
+};
 
+// Извлекаем популярные
+export const getLatestPosts = async () => {
+  try {
+    const posts = await databases.listDocuments(
+      // теперь можно опустить appwriteConfig
+      databaseId,
+      videoCollectionId,
+      [Query.orderDesc("$createdAt"), Query.limit(7)]
+    );
+    return posts.documents;
   } catch (error) {
     throw new Error("AllPosts");
   }
