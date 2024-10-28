@@ -1,4 +1,4 @@
-import { View, Text, Image, TouchableOpacity, Pressable } from "react-native";
+import { View, Text, Image, Pressable } from "react-native";
 import React, { useState } from "react";
 import { icons } from "@/constants";
 import { ResizeMode, Video } from "expo-av";
@@ -62,8 +62,8 @@ const VideoCard = ({
                 borderRadius: 5,
                 justifyContent: "center",
                 alignItems: "center",
-                resizeMode: "cover",
               }}
+              resizeMode={"cover"}
             />
           </View>
           <View
@@ -96,8 +96,8 @@ const VideoCard = ({
 
               justifyContent: "center",
               alignItems: "center",
-              resizeMode: "contain",
             }}
+            resizeMode={"contain"}
           />
         </View>
       </View>
@@ -151,9 +151,9 @@ const VideoCard = ({
               style={{
                 width: "100%",
                 height: "100%",
-                resizeMode: "cover",
                 borderRadius: 15,
               }}
+              resizeMode={"cover"}
             />
             <Image
               source={icons.play}
@@ -161,8 +161,8 @@ const VideoCard = ({
                 position: "absolute",
                 width: 36,
                 height: 36,
-                resizeMode: "contain",
               }}
+              resizeMode={"contain"}
             />
           </Pressable>
         )}

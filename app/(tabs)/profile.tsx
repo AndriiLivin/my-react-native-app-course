@@ -1,30 +1,72 @@
-import { StyleSheet, Text, View } from "react-native";
-import React from "react";
-// rnfes - снипет
+import { FlatList, Text, View } from "react-native";
+import React, { useEffect } from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
+
+import SearchInput from "@/components/SearchInput";
+import EmptyState from "@/components/EmptyState";
+
+import { getUserPosts, searchPosts } from "@/lib/appwrite";
+
+import useAppwrite from "@/lib/useAppwrite";
+import VideoCard from "@/components/VideoCard";
+import { useLocalSearchParams } from "expo-router";
+import { useGlobalContext } from "@/context/GlobalProvider";
 
 const Profile = () => {
+  const { user, setUser, setIsLoggedIn } = useGlobalContext();
+  // const { query } = useLocalSearchParams();
+  // извлекаем данные из прользовательского хука
+  // и переименовываем в posts
+  const { data: posts } = useAppwrite(() => getUserPosts(user.$id));
+  console.log(user, posts);
+
   return (
-    <>
-      <Text style={styles.text}>Header</Text>
-      <View style={styles.container}>
-        <Text style={styles.text}>Profile</Text>
-      </View>
-      <Text style={styles.text}>Footer</Text>
-    </>
+    <SafeAreaView style={{ backgroundColor: "#161622", height: "100%" }}>
+      <FlatList
+        data={posts}
+        keyExtractor={(item: any) => item.$id}
+        renderItem={({ item }) => <VideoCard video={item} />}
+        ListHeaderComponent={() => (
+          <View
+            style={{
+              marginVertical: 32,
+              paddingHorizontal: 16,
+              // gap: 10,
+            }}
+          >
+            <Text
+              style={{
+                color: "#CDCDE0",
+                fontFamily: "PoppinsMedium",
+                fontSize: 14,
+              }}
+            >
+              Search Results
+            </Text>
+            <Text
+              style={{
+                color: "#CDCDE0",
+                fontFamily: "PoppinsSemiBold",
+                fontSize: 24,
+              }}
+            >
+              {/* {query} */}
+            </Text>
+
+            <View style={{ marginTop: 6, marginBottom: 8 }}>
+              {/* <SearchInput initialQuery={query} /> */}
+            </View>
+          </View>
+        )}
+        ListEmptyComponent={() => (
+          <EmptyState
+            title="No Videos Found"
+            subtitle="No videos found for this search query"
+          />
+        )}
+      />
+    </SafeAreaView>
   );
 };
 
 export default Profile;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "maroon",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  text: {
-    fontSize: 33,
-    fontWeight: 700,
-  },
-});

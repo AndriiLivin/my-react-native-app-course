@@ -102,8 +102,9 @@ const TrendingItem = ({ activeItem, item }: any) => {
               position: "absolute",
               width: 36,
               height: 36,
-              resizeMode: "contain",
+
             }}
+            resizeMode="contain"
           />
         </Pressable>
       )}

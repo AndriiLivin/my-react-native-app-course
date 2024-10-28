@@ -1,10 +1,10 @@
-import { View, Text, Image } from 'react-native'
-import React from 'react'
-import { images } from '@/constants';
-import CustomButton from './CustomButton';
-import { router } from 'expo-router';
+import { View, Text, Image } from "react-native";
+import React from "react";
+import { images } from "@/constants";
+import CustomButton from "./CustomButton";
+import { router } from "expo-router";
 
-const EmptyState = ({title,subtitle}:any) => {
+const EmptyState = ({ title, subtitle }: any) => {
   return (
     <View
       style={{
@@ -18,8 +18,8 @@ const EmptyState = ({title,subtitle}:any) => {
         style={{
           width: 270,
           height: 215,
-          resizeMode: "contain",
         }}
+        resizeMode={"contain"}
       />
       <Text
         style={{
@@ -49,6 +49,6 @@ const EmptyState = ({title,subtitle}:any) => {
       />
     </View>
   );
-}
+};
 
-export default EmptyState
+export default EmptyState;

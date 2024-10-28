@@ -14,14 +14,7 @@ import { icons } from "../constants";
 import { router, usePathname } from "expo-router";
 
 
-// const SearchInput = ({
-//   title,
-//   value,
-//   placeholder,
-//   handleChangeText,
-//   otherStyles,
-//   ...props
-// }: IAny) => {
+
 const SearchInput = ({ initialQuery }:any) => {
   const [isActive, setIsActive] = useState(false);
 
@@ -85,11 +78,12 @@ const SearchInput = ({ initialQuery }:any) => {
           style={{
             height: 16,
             width: 16,
-            resizeMode: "contain",
+
             position: "absolute",
             bottom: -9,
             right: 12,
           }}
+          resizeMode={"contain"}
         />
       </Pressable>
     </View>

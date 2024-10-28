@@ -116,7 +116,8 @@ const Home = () => {
               >
                 <Image
                   source={images.logoSmall}
-                  style={{ width: 30, height: 34, resizeMode: "contain" }}
+                  style={{ width: 30, height: 34 }}
+                  resizeMode={"contain"}
                 />
               </View>
             </View>
