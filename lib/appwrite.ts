@@ -197,7 +197,7 @@ export const searchPosts = async (query: any) => {
 
 // поиск по сообщениям
 export const getUserPosts = async (userId: any) => {
-  console.log(userId);
+  // console.log(userId);
   
   try {
     // составьте список из базы данных,

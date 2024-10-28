@@ -4,7 +4,7 @@ import React, { useState } from "react";
 interface ICustomButton {
   title: string;
   handlPress: () => void;
-  containerStyles: { marginTop: number; [key: string]: any;};
+  containerStyles: { marginTop: number; [key: string]: any };
   textStyles: {
     // дополнительные пока неизвестные ключи
     // используется не часто
@@ -26,7 +26,6 @@ const CustomButton = ({
   textStyles,
   isLoading,
 }: ICustomButton) => {
-
   const [isPressed, setIsPressed] = useState(false);
 
   return (
@@ -38,7 +37,7 @@ const CustomButton = ({
         // activeOpacity={0.7}
         style={Object.assign(containerStyles, styles.opacity, {
           opacity: isLoading ? 50 : 100,
-          backgroundColor: isPressed ? "rgba(255, 140, 0, 0.7)":"#FF8C00",
+          backgroundColor: isPressed ? "rgba(255, 140, 0, 0.7)" : "#FF8C00",
         })}
         disabled={isLoading}
       >

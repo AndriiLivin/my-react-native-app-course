@@ -90,8 +90,8 @@ const TrendingItem = ({ activeItem, item }: any) => {
               marginVertical: 16,
               marginLeft: 16,
 
-              shadowColor: "grey",
-              shadowRadius: 20,
+              // shadowColor: "grey",
+              // shadowRadius: 20,
               // shadowOffset:{width:10, height: 20}
             }}
             resizeMode="cover"
@@ -102,7 +102,6 @@ const TrendingItem = ({ activeItem, item }: any) => {
               position: "absolute",
               width: 36,
               height: 36,
-
             }}
             resizeMode="contain"
           />

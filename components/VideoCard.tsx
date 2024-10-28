@@ -55,7 +55,9 @@ const VideoCard = ({
             }}
           >
             <Image
-              source={creator.avatar}
+              // source={creator.avatar}
+              // source={{ uri: "../assets/images/unnamed.webp" }}
+              source={{uri: "../assets/video/tQN.gif" }}
               style={{
                 width: "100%",
                 height: "100%",
