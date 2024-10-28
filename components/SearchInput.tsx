@@ -7,29 +7,28 @@ import {
   // вместо него
   Pressable,
   View,
+  Alert,
 } from "react-native";
 import React, { useState } from "react";
 import { icons } from "../constants";
+import { router, usePathname } from "expo-router";
 
-interface IAny {
-  // дополнительные пока неизвестные ключи
-  // используется не часто
-  [key: string]: any;
-}
 
-const SearchInput = ({
-  title,
-  value,
-  placeholder,
-  handleChangeText,
-  otherStyles,
-  ...props
-}: IAny) => {
-  const [showPassword, setShowPassword] = useState(false);
+// const SearchInput = ({
+//   title,
+//   value,
+//   placeholder,
+//   handleChangeText,
+//   otherStyles,
+//   ...props
+// }: IAny) => {
+const SearchInput = ({ initialQuery }:any) => {
   const [isActive, setIsActive] = useState(false);
 
+  const pathName = usePathname();
+  const [query, setQuery] = useState(initialQuery || "");
+
   return (
-    // <View style={Object.assign({ rowGap: 1 }, otherStyles)}>
 
     <View
       style={{
@@ -58,14 +57,29 @@ const SearchInput = ({
           lineHeight: 22.4,
           paddingLeft: 10,
         }}
-        value={value}
+        value={query}
         placeholder={"Search for a video topic"}
-        placeholderTextColor="#7B7B8B"
-        onChangeText={handleChangeText}
-        secureTextEntry={title === "Password" && !showPassword}
+        placeholderTextColor="#CDCDE0"
+        onChangeText={(e) => setQuery(e)}
+        // secureTextEntry={title === "Password" && !showPassword}
       />
-      {/* по сути <TouchableOpacity> - <Pressable является кнопкой */}
-      <Pressable>
+
+      <Pressable
+        onPress={() => {
+          if (!query) {
+            return Alert.alert(
+              "Missing query.",
+              "Please input something to search results across database."
+            );
+          }
+
+          if (pathName.startsWith("/search")) {
+            router.setParams({ query });
+          } else {
+            router.push(`/search/${query}`);
+          }
+        }}
+      >
         <Image
           source={icons.search}
           style={{

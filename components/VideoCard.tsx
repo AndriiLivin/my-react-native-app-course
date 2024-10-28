@@ -1,6 +1,7 @@
 import { View, Text, Image, TouchableOpacity, Pressable } from "react-native";
 import React, { useState } from "react";
 import { icons } from "@/constants";
+import { ResizeMode, Video } from "expo-av";
 
 const VideoCard = ({
   video: {
@@ -8,6 +9,7 @@ const VideoCard = ({
     thumbnail,
     video,
     // creator: { username, avatar },
+    creator,
   },
 }: any) => {
   // определяем воспроизводится ли видео
@@ -26,7 +28,6 @@ const VideoCard = ({
       <View
         style={{
           display: "flex",
-
           flexDirection: "row",
           alignItems: "flex-start",
           gap: 10,
@@ -54,7 +55,7 @@ const VideoCard = ({
             }}
           >
             <Image
-              source={{ uri: thumbnail }}
+              source={creator.avatar}
               style={{
                 width: "100%",
                 height: "100%",
@@ -82,7 +83,7 @@ const VideoCard = ({
               style={{ fontSize: 14, fontWeight: 400, color: "#CDCDE0" }}
               numberOfLines={1}
             >
-              UserName maybe
+              {creator.username}
             </Text>
           </View>
         </View>
@@ -103,10 +104,37 @@ const VideoCard = ({
       <View>
         {/* открываем динамический блок кода */}
         {play ? (
-          <Text style={{ color: "white",textAlign:"center" }}> Playing</Text>
+          // <Text style={{ color: "white",textAlign:"center" }}> Playing</Text>
+
+          <Video
+            source={{
+              // uri: "../assets/video/sill_1280x720.mp4",
+              uri: "https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4",
+              // uri: "../assets/video/tQN.gif",
+              // uri: video,
+            }}
+            style={{
+              width: "100%",
+              height: 200,
+              // width: 190,
+              // height: 285,
+              borderRadius: 15,
+              // overflow: "hidden",
+              marginVertical: 16,
+              // marginLeft: 16,
+              // backgroundColor: "grey",
+            }}
+            resizeMode={ResizeMode.CONTAIN}
+            useNativeControls
+            shouldPlay
+            onPlaybackStatusUpdate={(status: any) => {
+              if (status.didJustFinish) {
+                setPlay(false);
+              }
+            }}
+          />
         ) : (
-            <Pressable
-            
+          <Pressable
             //  onHoverIn={}
             onPress={() => setPlay(true)}
             style={{
@@ -116,7 +144,6 @@ const VideoCard = ({
               position: "relative",
               justifyContent: "center",
               alignItems: "center",
-
             }}
           >
             <Image
@@ -125,6 +152,7 @@ const VideoCard = ({
                 width: "100%",
                 height: "100%",
                 resizeMode: "cover",
+                borderRadius: 15,
               }}
             />
             <Image

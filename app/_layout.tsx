@@ -47,11 +47,11 @@ export default function RootLayout() {
           <Stack.Screen name="index" options={{ headerShown: false }} />
 
           {/* скрываем верхнюю белую панель со стрелкой возврата и названием */}
-          {/* <Stack.Screen name="(auth)" options={{ headerShown: false }} /> */}
-          {/* <Stack.Screen name="(tabs)" options={{ headerShown: false }} /> */}
+          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           {/*  */}
           {/* <Stack.Screen
-          name="(/search/[query])"
+          name="search/[query]"
           options={{ headerShown: false }}
         /> */}
           {/* <Stack.Screen name="+not-found" /> */}

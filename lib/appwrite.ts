@@ -88,26 +88,29 @@ export const createUser = async (
   }
 };
 
+const deleteSession = async () => {
+  try {
+    const activeSessions = await account.listSessions();
+    if (activeSessions.total > 0) {
+      await account.deleteSession("current");
+    }
+  } catch (error) {
+    console.log("Нет доступных сеансов.");
+  }
+};
+
 export const singIn = async (email: string, password: string) => {
   try {
-    // const list = await account.listSessions();
-    // console.log(list, list.total, list.sessions);
-
-    // if (isLoggedIn) {
-    //   console.log("есть текущая сессия");
-
     //   const currentSession = await account.getSession("current");
-    //   console.log(currentSession);
-
-    //   return currentSession;
-    // }
 
     // предварительно удаляем текущую
-    await account.deleteSession("current");
+    // await account.deleteSession("current");
+    await deleteSession();
     // создаем сеанс электронной почты
     // метод createEmailPasswordSession позволяет пользователю войти в свою учетную запись по email и password
     // предоставляется appwrite
     const session = await account.createEmailPasswordSession(email, password);
+
     // возвращаем сеанс
     return session;
   } catch (error: any) {
@@ -119,8 +122,10 @@ export const getCurrentUser = async () => {
   try {
     const currentAccaunt = await account.get();
 
+
     if (!currentAccaunt) throw Error;
     // если текущая уч запись есть, то получаем из баз данных
+
     const currentUser = await databases.listDocuments(
       appwriteConfig.databaseId,
       appwriteConfig.userCollectionId,
@@ -128,6 +133,7 @@ export const getCurrentUser = async () => {
       // точно определяем пользователя кот в данный момент вошел в систему
       [Query.equal("accountId", currentAccaunt.$id)]
     );
+
     if (!currentUser) throw Error;
     // т.к. нужен только один пользователь
     return currentUser.documents[0];
@@ -163,5 +169,51 @@ export const getLatestPosts = async () => {
     return posts.documents;
   } catch (error) {
     throw new Error("AllPosts");
+  }
+};
+
+// поиск по сообщениям
+export const searchPosts = async (query: any) => {
+  try {
+    // составьте список из базы данных,
+    // укажите идентификатор базы и идентификатор коллекции данных,
+    //  что мы собираемся получить
+    const posts = await databases.listDocuments(
+      databaseId,
+      videoCollectionId,
+      // выполнить поиск по названию и запрос в качестве фактического поискового запроса
+      [Query.search("title", query)]
+    );
+
+    // это даст все сообщения, что соответствуют нашему запросу
+    return posts.documents;
+  } catch (error) {
+    console.log("No No Videos Found");
+
+    return [];
+    // throw new Error("No No Videos Found");
+  }
+};
+
+// поиск по сообщениям
+export const getUserPosts = async (userId: any) => {
+  try {
+    // составьте список из базы данных,
+    // укажите идентификатор базы и идентификатор коллекции данных,
+    //  что мы собираемся получить
+    const posts = await databases.listDocuments(
+      databaseId,
+      videoCollectionId,
+      // выполнить поиск по названию и запрос в качестве фактического поискового запроса
+      [Query.equal("creator", userId)]
+    );
+
+    // это даст все сообщения, что соответствуют нашему запросу
+    return posts.documents;
+  } catch (error) {
+    console.log("No No Videos Found");
+
+    return [];
+    // throw new Error("No No Videos Found");
   }
 };

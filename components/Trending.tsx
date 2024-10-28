@@ -8,8 +8,12 @@ import {
 } from "react-native";
 import React, { useRef, useState } from "react";
 
-import * as Animatable from "react-native-animatable";
 import { icons } from "@/constants";
+import { video } from "@/constants";
+
+import * as Animatable from "react-native-animatable";
+
+import { ResizeMode, Video } from "expo-av";
 
 const zoomIn = {
   0: { scale: 0.8 },
@@ -24,7 +28,7 @@ const zoomOut = {
 const TrendingItem = ({ activeItem, item }: any) => {
   const [play, setPlay] = useState(false);
 
-  // console.log(activeItem.$id, item.$id);
+  // console.  log(item.video);
 
   return (
     // возвращает представление, кот позволяет создавать анимацию внутри него
@@ -36,7 +40,36 @@ const TrendingItem = ({ activeItem, item }: any) => {
       style={{ marginRight: 16 }}
     >
       {play ? (
-        <Text style={{ color: "white" }}>Plaing </Text>
+        <Video
+          source={{
+            // uri: "../assets/video/sill_1280x720.mp4",
+            uri: "https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4",
+            // uri: "../assets/video/tQN.gif",
+            // uri: item.video,
+          }}
+          style={{
+            width: 190,
+            height: 285,
+            borderRadius: 15,
+            // overflow: "hidden",
+            marginVertical: 16,
+            marginLeft: 16,
+
+            backgroundColor: "grey",
+            // shadowColor: "grey",
+            // shadowRadius: 20,
+            // shadowOffset:{width:10, height: 20}
+          }}
+          resizeMode={ResizeMode.STRETCH}
+          // useNativeControls
+          shouldPlay
+          onPlaybackStatusUpdate={(status: any) => {
+            if (status.didJustFinish) {
+              setPlay(false);
+            }
+          }}
+          // status(failed) net:: ERR_BLOCKED_BY_ORB
+        />
       ) : (
         <Pressable
           //  onHoverIn={}

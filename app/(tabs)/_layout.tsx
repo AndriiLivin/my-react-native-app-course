@@ -11,12 +11,6 @@ interface ITabIcon {
   focused: boolean;
 }
 
-// interface IAny {
-//   // дополнительные пока неизвестные ключи
-//   // используется не часто
-//   [key: string]: any;
-// }
-
 const TabIcon = ({ icon, color, name, focused }: ITabIcon) => {
   return (
     <View style={{ alignItems: "center", gap: 1, pointerEvents: "none" }}>

@@ -38,10 +38,10 @@ const SingIn = () => {
       router.replace("/home");
       //
     } catch (error: any) {
-      Alert.alert("Error", "предупреждаю" + error.message);
+      Alert.alert("Error", "Не получается регистрация" + error.message);
       //  console.log("предупреждаю" + error.message);
 
-      alert("предупреждаю");
+      alert("Не получается регистрация");
     } finally {
       setIsSubmitting(false);
     }

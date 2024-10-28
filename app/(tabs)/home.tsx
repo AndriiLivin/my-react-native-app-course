@@ -43,7 +43,6 @@ const Home = () => {
   // извлекаем данные из прользовательского хука
   // и переименовываем в posts
   const { data: posts, refetch } = useAppwrite(getAllPosts);
-  // console.log(posts);
 
   const { data: latestPosts } = useAppwrite(getLatestPosts);
 
@@ -77,7 +76,7 @@ const Home = () => {
         ListHeaderComponent={() => (
           <View
             style={{
-              marginVertical: 12,
+              marginVertical: 32,
               paddingHorizontal: 16,
               gap: 10,
             }}

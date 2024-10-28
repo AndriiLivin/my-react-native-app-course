@@ -1,4 +1,5 @@
 import icons from "./icons";
 import images from "./images";
+import video from "./video";
 
-export { icons, images };
+export { icons, images, video };

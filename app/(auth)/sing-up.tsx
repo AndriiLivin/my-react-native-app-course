@@ -40,7 +40,7 @@ const SingUp = () => {
       Alert.alert("Error", "предупреждаю" + error.message);
       console.log("предупреждаю" + error.message);
 
-      alert("предупреждаю");
+      alert("не получается создать запись");
     } finally {
       setIsSubmitting(false);
     }
