@@ -77,7 +77,8 @@ const Profile = () => {
             >
               {/* <Image source={{ uri: user?.avatar }} /> */}
               <Image
-                source={{ uri: "../assets/video/tQN.gif" }}
+                // source={{ uri: "../assets/video/tQN.gif" }}
+                source={{ uri: "../assets/images/professional-business.jpg" }}
                 style={{
                   width: `90%`,
                   height: `90%`,

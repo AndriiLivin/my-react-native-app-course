@@ -56,12 +56,12 @@ const VideoCard = ({
           >
             <Image
               // source={creator.avatar}
-              // source={{ uri: "../assets/images/unnamed.webp" }}
-              source={{uri: "../assets/video/tQN.gif" }}
+              source={{ uri: "../assets/images/professional-business.jpg" }}
+              // source={{uri: "../assets/video/tQN.gif" }}
               style={{
                 width: "100%",
                 height: "100%",
-                borderRadius: 5,
+                borderRadius:8,
                 justifyContent: "center",
                 alignItems: "center",
               }}

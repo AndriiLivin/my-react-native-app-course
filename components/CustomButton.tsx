@@ -43,14 +43,6 @@ const CustomButton = ({
       >
         <Text style={Object.assign(styles.text, textStyles)}>{title}</Text>
       </Pressable>
-      {/* <TouchableOpacity
-        onPress={handlPress}
-        activeOpacity={0.7}
-        style={styleSum}
-        disabled={isLoading}
-      >
-        <Text style={Object.assign(styles.text, textStyles)}>{title}</Text>
-      </TouchableOpacity> */}
     </>
   );
 };
