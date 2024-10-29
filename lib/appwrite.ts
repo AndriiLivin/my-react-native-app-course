@@ -94,6 +94,7 @@ const deleteSession = async () => {
     if (activeSessions.total > 0) {
       await account.deleteSession("current");
     }
+    return account;
   } catch (error) {
     console.log("Нет доступных сеансов.");
   }
@@ -118,10 +119,20 @@ export const singIn = async (email: string, password: string) => {
   }
 };
 
+export const singOut = async () => {
+  try {
+    return deleteSession();
+    // const session = await account.deleteSession("current");
+    // // возвращаем завершенный сеанс
+    // return session;
+  } catch (error: any) {
+    throw new Error(error);
+  }
+};
+
 export const getCurrentUser = async () => {
   try {
     const currentAccaunt = await account.get();
-
 
     if (!currentAccaunt) throw Error;
     // если текущая уч запись есть, то получаем из баз данных
@@ -198,7 +209,7 @@ export const searchPosts = async (query: any) => {
 // поиск по сообщениям
 export const getUserPosts = async (userId: any) => {
   // console.log(userId);
-  
+
   try {
     // составьте список из базы данных,
     // укажите идентификатор базы и идентификатор коллекции данных,

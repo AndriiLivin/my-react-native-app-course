@@ -10,6 +10,8 @@ import { createUser } from "@/lib/appwrite";
 import { useGlobalContext } from "@/context/GlobalProvider";
 
 const SingUp = () => {
+  const { setUser, setIsLoggedIn }: any = useGlobalContext();
+
   const [form, setForm] = useState({
     username: "",
     email: "",
@@ -17,12 +19,11 @@ const SingUp = () => {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { setUser, setIsLoggedIn }: any = useGlobalContext();
 
   const submit = async () => {
     if (form.username === "" || form.password === "" || form.email === "") {
       Alert.alert("Error", "Please fill in all fields");
-      alert("Please fill in all fields");
+      // alert("Please fill in all fields");
     }
     setIsSubmitting(true);
 
@@ -33,12 +34,12 @@ const SingUp = () => {
       setUser(result);
       setIsLoggedIn(true);
 
-      console.log("перенаправление");
+      // console.log("перенаправление");
       router.replace("/home");
       //
     } catch (error: any) {
       Alert.alert("Error", "предупреждаю" + error.message);
-      console.log("предупреждаю" + error.message);
+      // console.log("предупреждаю" + error.message);
 
       alert("не получается создать запись");
     } finally {

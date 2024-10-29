@@ -17,8 +17,10 @@ import EmptyState from "@/components/EmptyState";
 import { getAllPosts, getLatestPosts } from "@/lib/appwrite";
 import useAppwrite from "@/lib/useAppwrite";
 import VideoCard from "@/components/VideoCard";
+import { useGlobalContext } from "@/context/GlobalProvider";
 
 const Home = () => {
+    const { user, setUser, setIsLoggedIn }: any =  useGlobalContext();
   // const [data, setData] = useState([]);
   // const [isLoading, setIsLoading] = useState(true);
 
@@ -97,16 +99,18 @@ const Home = () => {
                     fontSize: 14,
                   }}
                 >
-                  Welcome back
+                  Welcome back,
                 </Text>
                 <Text
                   style={{
                     color: "#CDCDE0",
                     fontFamily: "PoppinsSemiBold",
                     fontSize: 24,
+                    textTransform:"uppercase"
                   }}
                 >
-                  LAI
+                  {/* LAI */}
+                  {user?.username}
                 </Text>
               </View>
               <View

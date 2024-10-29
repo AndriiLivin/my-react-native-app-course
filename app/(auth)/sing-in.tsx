@@ -10,13 +10,14 @@ import { getCurrentUser, singIn } from "@/lib/appwrite";
 import { useGlobalContext } from "@/context/GlobalProvider";
 
 const SingIn = () => {
+  const { setUser, setIsLoggedIn }: any = useGlobalContext();
+
   const [form, setForm] = useState({
     email: "",
     password: "",
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { setUser, setIsLoggedIn }: any = useGlobalContext();
 
   const submit = async () => {
     if (form.password === "" || form.email === "") {
@@ -34,7 +35,7 @@ const SingIn = () => {
       setIsLoggedIn(true);
 
       Alert.alert("Success", "User sined in successfully");
-      alert("User sined in successfully");
+      // alert("User sined in successfully");
       router.replace("/home");
       //
     } catch (error: any) {

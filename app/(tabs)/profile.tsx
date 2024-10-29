@@ -5,11 +5,11 @@ import { SafeAreaView } from "react-native-safe-area-context";
 // import SearchInput from "@/components/SearchInput";
 import EmptyState from "@/components/EmptyState";
 
-import { getUserPosts } from "@/lib/appwrite";
+import { getUserPosts, singOut } from "@/lib/appwrite";
 
 import useAppwrite from "@/lib/useAppwrite";
 import VideoCard from "@/components/VideoCard";
-import { useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { icons } from "@/constants";
 import BoxInfo from "@/components/BoxInfo";
@@ -20,14 +20,18 @@ const Profile = () => {
   // извлекаем данные из прользовательского хука
   // и переименовываем в posts
   const { data: posts } = useAppwrite(() => getUserPosts(user.$id));
-  console.log(user, posts);
+  // console.log(user, posts);
 
-  const logout = () => {};
+  // выходим из системы
+  const logout = async () => {
+    await singOut();
 
+    setUser(null);
+    setIsLoggedIn(false);
 
+    router.replace("/sing-in");
+  };
 
-
-  
   return (
     <SafeAreaView style={{ backgroundColor: "#161622", height: "100%" }}>
       <FlatList
@@ -87,8 +91,6 @@ const Profile = () => {
                 resizeMode="cover"
               />
             </View>
-            {/* <Text style={{ color: "red" }}>{user?.username}</Text> */}
-            {/* <BoxInfo title={user?.username} subtitle="GGGGGGG" /> */}
 
             <BoxInfo
               title={user?.username}
@@ -96,6 +98,7 @@ const Profile = () => {
               containerStyles={{ marginTop: 20 }}
               titleStyles={{
                 fontSize: 18,
+                textTransform: "uppercase",
               }}
             />
 
