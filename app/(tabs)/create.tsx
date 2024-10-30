@@ -22,33 +22,35 @@ const Create = () => {
     prompt: "",
   });
 
+  const openPicker = async (selectType) => {
+    // выбор режима
+    const result =await DocumentPicker
+  };
+
   const submit = async () => {
-    if (form.password === "" || form.email === "") {
-      Alert.alert("Error", "Please fill in all fields");
-      alert("Please fill in all fields");
-    }
-    setIsSubmitting(true);
-
-    try {
-      // входим в систему
-      await singIn(form.email, form.password);
-      const result = await getCurrentUser();
-      // set it to global state....
-      setUser(result);
-      setIsLoggedIn(true);
-
-      Alert.alert("Success", "User sined in successfully");
-      // alert("User sined in successfully");
-      router.replace("/home");
-      //
-    } catch (error: any) {
-      Alert.alert("Error", "Не получается регистрация" + error.message);
-      //  console.log("предупреждаю" + error.message);
-
-      alert("Не получается регистрация");
-    } finally {
-      setIsSubmitting(false);
-    }
+    // if (form.password === "" || form.email === "") {
+    //   Alert.alert("Error", "Please fill in all fields");
+    //   alert("Please fill in all fields");
+    // }
+    // setIsSubmitting(true);
+    // try {
+    //   // входим в систему
+    //   await singIn(form.email, form.password);
+    //   const result = await getCurrentUser();
+    //   // set it to global state....
+    //   setUser(result);
+    //   setIsLoggedIn(true);
+    //   Alert.alert("Success", "User sined in successfully");
+    //   // alert("User sined in successfully");
+    //   router.replace("/home");
+    //   //
+    // } catch (error: any) {
+    //   Alert.alert("Error", "Не получается регистрация" + error.message);
+    //   //  console.log("предупреждаю" + error.message);
+    //   alert("Не получается регистрация");
+    // } finally {
+    //   setIsSubmitting(false);
+    // }
   };
 
   return (
@@ -86,9 +88,7 @@ const Create = () => {
           >
             Upload Video
           </Text>
-          <Pressable
-          // onPress={() => setShowPassword(!showPassword)}
-          >
+          <Pressable onPress={() => openPicker("video")}>
             {form.video ? (
               <Video
                 source={{ uri: form.video.uri }}
@@ -160,9 +160,7 @@ const Create = () => {
           >
             Thumbnail Image
           </Text>
-          <Pressable
-          // onPress={() => setShowPassword(!showPassword)}
-          >
+          <Pressable onPress={() => openPicker("image")}>
             {form.thumbnail ? (
               <Image
                 source={{ uri: form.thumbnail.uri }}
