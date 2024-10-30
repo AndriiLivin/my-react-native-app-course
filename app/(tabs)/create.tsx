@@ -5,6 +5,7 @@ import {
   ScrollView,
   Pressable,
   Image,
+  Alert,
 } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -13,7 +14,13 @@ import { Video, ResizeMode } from "expo-av";
 import { icons } from "@/constants";
 import CustomButton from "@/components/CustomButton";
 
+import * as DocumentPicker from "expo-document-picker";
+import { router } from "expo-router";
+import { createVideo } from "@/lib/appwrite";
+import { useGlobalContext } from "@/context/GlobalProvider";
+
 const Create = () => {
+  const { user }: any = useGlobalContext();
   const [uploading, setUploading] = useState(false);
   const [form, setForm] = useState<any>({
     title: "",
@@ -22,35 +29,54 @@ const Create = () => {
     prompt: "",
   });
 
-  const openPicker = async (selectType) => {
+  const openPicker = async (selectType: any) => {
     // выбор режима
-    const result =await DocumentPicker
+    const result = await DocumentPicker.getDocumentAsync({
+      type:
+        selectType === "image"
+          ? ["image/png", "image/jpg", "image/jpeg"]
+          : ["video/mp4", "video/gif"],
+    });
+    if (!result.canceled) {
+      if (selectType === "image") {
+        setForm({ ...form, thumbnail: result.assets[0] });
+      }
+      if (selectType === "video") {
+        setForm({ ...form, video: result.assets[0] });
+      }
+    }
+    // else {
+    //   setTimeout(() => {}, 100);
+    //   Alert.alert("Document picker", JSON.stringify(result, null, 2));
+    //   alert(JSON.stringify(result, null, 2));
+    // }
   };
 
   const submit = async () => {
-    // if (form.password === "" || form.email === "") {
-    //   Alert.alert("Error", "Please fill in all fields");
-    //   alert("Please fill in all fields");
-    // }
-    // setIsSubmitting(true);
-    // try {
-    //   // входим в систему
-    //   await singIn(form.email, form.password);
-    //   const result = await getCurrentUser();
-    //   // set it to global state....
-    //   setUser(result);
-    //   setIsLoggedIn(true);
-    //   Alert.alert("Success", "User sined in successfully");
-    //   // alert("User sined in successfully");
-    //   router.replace("/home");
-    //   //
-    // } catch (error: any) {
-    //   Alert.alert("Error", "Не получается регистрация" + error.message);
-    //   //  console.log("предупреждаю" + error.message);
-    //   alert("Не получается регистрация");
-    // } finally {
-    //   setIsSubmitting(false);
-    // }
+    if (!form.prompt || !form.title || !form.thumbnail || !form.video) {
+      // return Alert.alert("Please fill all the fields");
+      return alert("Please fill all the fields");
+    }
+    setUploading(true);
+
+    try {
+      // пополняем в appwrite базу данных
+      await createVideo({ ...form, userId: user.$id });
+
+      Alert.alert("Success", "Post uploaded successfully");
+      alert("Post uploaded successfully");
+      router.push("/home");
+    } catch (error: any) {
+      Alert.alert("Error", error.message);
+    } finally {
+      setForm({
+        title: "",
+        video: null,
+        thumbnail: null,
+        prompt: "",
+      });
+      setUploading(false);
+    }
   };
 
   return (
@@ -97,9 +123,9 @@ const Create = () => {
                   height: 150,
                   borderRadius: 8,
                 }}
-                useNativeControls
-                resizeMode={ResizeMode.COVER}
-                isLooping
+                // useNativeControls
+                resizeMode={ResizeMode.CONTAIN}
+                // isLooping
               />
             ) : (
               <View
@@ -164,7 +190,7 @@ const Create = () => {
             {form.thumbnail ? (
               <Image
                 source={{ uri: form.thumbnail.uri }}
-                resizeMode="cover"
+                resizeMode="contain"
                 style={{
                   width: "100%",
                   height: 150,

@@ -1,3 +1,5 @@
+import { renderer } from "react-test-renderer";
+import { video } from "@/constants";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import {
   Client,
@@ -6,6 +8,8 @@ import {
   Avatars,
   Databases,
   Query,
+  Storage,
+  ImageGravity,
 } from "react-native-appwrite";
 
 export const appwriteConfig = {
@@ -42,6 +46,7 @@ client
 const account = new Account(client);
 const avatars = new Avatars(client);
 const databases = new Databases(client);
+const storage = new Storage(client);
 
 export const createUser = async (
   email: string,
@@ -228,5 +233,72 @@ export const getUserPosts = async (userId: any) => {
 
     return [];
     // throw new Error("No No Videos Found");
+  }
+};
+
+export const getFilePreview = async (fileId: any, type: any) => {
+  let fileUrl;
+  try {
+    if (type === "video") {
+      fileUrl = storage.getFileView(storageId, fileId);
+    } else if (type === "image") {
+      fileUrl = storage.getFilePreview(
+        storageId,
+        fileId,
+        2000,
+        2000,
+        ImageGravity.Top,
+        100
+      );
+    } else {
+      throw new Error("Invalid file type");
+    }
+    if (!fileUrl) throw Error;
+
+    return fileUrl;
+  } catch (error: any) {
+    throw new Error(error);
+  }
+};
+
+export const upLoadFile = async (file: any, type: any) => {
+  if (!file) return;
+
+  const { mimeType, ...rest } = file;
+  const asset = { type: mimeType, ...rest };
+  try {
+    const upLoadFile = await storage.createFile(storageId, ID.unique(), asset);
+
+    // после этого appwrite выдаст url
+    const fileUrl = await getFilePreview(upLoadFile.$id, type);
+
+    return fileUrl;
+  } catch (error: any) {
+    throw new Error(error);
+  }
+};
+
+export const createVideo = async (form: any) => {
+  try {
+    // с помощью промис можно начать загрузку обоих файлов одновременно
+    const [thumbnailUrl, videoUrl] = await Promise.all([
+      upLoadFile(form.thumbnail, "image"),
+      upLoadFile(form.video, "video"),
+    ]);
+    const newPost = await databases.createDocument(
+      databaseId,
+      videoCollectionId,
+      ID.unique(),
+      {
+        title: form.title,
+        thumbnail: thumbnailUrl,
+        video: videoUrl,
+        prompt: form.prompt,
+        creator: form.userId,
+      }
+    );
+    return newPost;
+  } catch (error: any) {
+    throw new Error(error);
   }
 };
