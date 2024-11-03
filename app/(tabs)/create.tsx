@@ -15,6 +15,8 @@ import { icons } from "@/constants";
 import CustomButton from "@/components/CustomButton";
 
 import * as DocumentPicker from "expo-document-picker";
+import * as ImagePicker from "expo-image-picker";
+
 import { router } from "expo-router";
 import { createVideo } from "@/lib/appwrite";
 import { useGlobalContext } from "@/context/GlobalProvider";
@@ -32,11 +34,32 @@ const Create = () => {
   const openPicker = async (selectType: any) => {
     // выбор режима
     const result = await DocumentPicker.getDocumentAsync({
+
       type:
         selectType === "image"
           ? ["image/png", "image/jpg", "image/jpeg"]
           : ["video/mp4", "video/gif"],
     });
+    console.log(result);
+
+    // заменили на это ImagePicker
+    // let result1 = await ImagePicker.launchImageLibraryAsync({
+    //   // mediaTypes: ImagePicker.MediaTypeOptions.All,
+    //   // не хотим все носители
+    //   selectionLimit: 1,
+
+    //   mediaTypes:
+    //     selectType === "image"
+    //       ? ImagePicker.MediaTypeOptions.Images
+    //       : ImagePicker.MediaTypeOptions.Videos,
+    //   // allowsEditing: true,
+    //   // aspect: [4, 3],
+
+    //   videoQuality: ImagePicker.UIImagePickerControllerQualityType.High,
+    //   quality: 1,
+    // });
+    // console.log(result1);
+
     if (!result.canceled) {
       if (selectType === "image") {
         setForm({ ...form, thumbnail: result.assets[0] });
@@ -45,11 +68,13 @@ const Create = () => {
         setForm({ ...form, video: result.assets[0] });
       }
     }
-    // else {
+    else {
+      console.log("результат отклонен");
+      
     //   setTimeout(() => {}, 100);
     //   Alert.alert("Document picker", JSON.stringify(result, null, 2));
     //   alert(JSON.stringify(result, null, 2));
-    // }
+    }
   };
 
   const submit = async () => {
@@ -114,7 +139,7 @@ const Create = () => {
           >
             Upload Video
           </Text>
-          <Pressable onPress={() => openPicker("video")}>
+          <Pressable id="uploader" onPress={() => openPicker("video")}>
             {form.video ? (
               <Video
                 source={{ uri: form.video.uri }}
@@ -123,7 +148,7 @@ const Create = () => {
                   height: 150,
                   borderRadius: 8,
                 }}
-                // useNativeControls
+                useNativeControls
                 resizeMode={ResizeMode.CONTAIN}
                 // isLooping
               />

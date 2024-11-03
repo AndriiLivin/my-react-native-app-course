@@ -61,7 +61,7 @@ const VideoCard = ({
               style={{
                 width: "100%",
                 height: "100%",
-                borderRadius:8,
+                borderRadius: 8,
                 justifyContent: "center",
                 alignItems: "center",
               }}
@@ -118,13 +118,8 @@ const VideoCard = ({
             style={{
               width: "100%",
               height: 200,
-              // width: 190,
-              // height: 285,
               borderRadius: 15,
-              // overflow: "hidden",
               marginVertical: 16,
-              // marginLeft: 16,
-              // backgroundColor: "grey",
             }}
             resizeMode={ResizeMode.CONTAIN}
             useNativeControls
@@ -134,6 +129,8 @@ const VideoCard = ({
                 setPlay(false);
               }
             }}
+            // onLoadStart={() => console.log("on load start")}
+            // onLoad={() => console.log("on load")}
           />
         ) : (
           <Pressable

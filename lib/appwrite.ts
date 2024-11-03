@@ -1,4 +1,3 @@
-import { renderer } from "react-test-renderer";
 import { video } from "@/constants";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import {
@@ -111,10 +110,14 @@ export const singIn = async (email: string, password: string) => {
 
     // предварительно удаляем текущую
     // await account.deleteSession("current");
+
     await deleteSession();
+
     // создаем сеанс электронной почты
     // метод createEmailPasswordSession позволяет пользователю войти в свою учетную запись по email и password
     // предоставляется appwrite
+    alert("пробуем входить");
+
     const session = await account.createEmailPasswordSession(email, password);
 
     // возвращаем сеанс
@@ -165,7 +168,8 @@ export const getAllPosts = async () => {
     const posts = await databases.listDocuments(
       // теперь можно опустить appwriteConfig
       databaseId,
-      videoCollectionId
+      videoCollectionId,
+      [Query.orderDesc("$createdAt")]
     );
     return posts.documents;
   } catch (error) {
@@ -264,21 +268,67 @@ export const getFilePreview = async (fileId: any, type: any) => {
 export const upLoadFile = async (file: any, type: any) => {
   if (!file) return;
 
-  const { mimeType, ...rest } = file;
-  const asset = { type: mimeType, ...rest };
+  const { mimeType, name, size, uri, ...rest } = file;
+  // const asset = { type: mimeType, ...rest };
+  const asset: {
+    name: string;
+    type: string;
+    size: number;
+    uri: string;
+  } = {
+    // name: file.file.name,
+    name: name,
+    // type: type === "image" ? file.mimeType : "mp4/gif",
+    type: mimeType,
+    size: size,
+    // size: type === "video" ? 2239733 : 122919,
+    uri: uri,
+    // uri:
+    //   type === "video"
+    //     ? "https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4"
+    //     : "https://images.freeimages.com/images/large-previews/39a/spring-1377434.jpg",
+  };
+
+  console.log("FILE", file, type);
+  console.log("ASSET", asset, rest);
+
+  console.log(storage, storageId, ID.unique());
+
   try {
-    const upLoadFile = await storage.createFile(storageId, ID.unique(), asset);
+    console.log("ПРОБУЕМ ЗАГРУЖАТЬ", asset);
+
+    document.getElementById("uploader")!;
+
+    // console.log(document.getElementById("uploader"));
+    const upLoadedFile = await storage.createFile(
+      appwriteConfig.storageId,
+      ID.unique(),
+      asset
+      // {
+      //   name: "jpg",
+      //   type: "image/jpeg",
+      //   size: 122919,
+      //   uri: "https://images.freeimages.com/images/large-previews/39a/spring-1377434.jpg",
+      // }
+      // file
+    );
+    // https://cloud.appwrite.io/v1/storage/buckets/670ff83e00173f0817e1/files
+    // https://cloud.appwrite.io/v1/storage/buckets/670ff83e00173f0817e1/files
+    console.log("UPLOADED", upLoadedFile);
 
     // после этого appwrite выдаст url
-    const fileUrl = await getFilePreview(upLoadFile.$id, type);
+    const fileUrl = await getFilePreview(upLoadedFile.$id, type);
 
     return fileUrl;
   } catch (error: any) {
+    console.log(" NOT UPLOADED", error);
     throw new Error(error);
   }
 };
 
 export const createVideo = async (form: any) => {
+  console.log(form);
+
   try {
     // с помощью промис можно начать загрузку обоих файлов одновременно
     const [thumbnailUrl, videoUrl] = await Promise.all([
